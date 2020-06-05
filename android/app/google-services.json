@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1076012066346",
+    "firebase_url": "https://fir-chatting-24333.firebaseio.com",
+    "project_id": "fir-chatting-24333",
+    "storage_bucket": "fir-chatting-24333.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076012066346:android:a5a3b21b0fd62d082fc553",
+        "android_client_info": {
+          "package_name": "com.sampe2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076012066346-daf5ht0002ndmacl1b7laj64h2q0hmp3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB23YqJckaTmGHeq1bn_imyiRtgD0GU3aM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076012066346-daf5ht0002ndmacl1b7laj64h2q0hmp3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
