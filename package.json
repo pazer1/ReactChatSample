@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
-    "@react-native-firebase/app": "7.1.4",
+    "@react-native-firebase/app": "^7.2.0",
     "@react-native-firebase/auth": "8.0.3",
+    "@react-native-firebase/firestore": "^7.1.5",
     "@react-navigation/native": "5.5.0",
     "@react-navigation/stack": "5.4.1",
     "react": "16.11.0",
@@ -37,5 +38,9 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/pazer1/ReactChatSample.git",
+  "author": "pazer1 <31427602+pazer1@users.noreply.github.com>",
+  "license": "MIT"
 }
