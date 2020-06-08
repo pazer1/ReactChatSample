@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useRef} from 'react';
 import {
   GiftedChat,
   Bubble,
@@ -15,16 +15,10 @@ export default function RoomScreen({route}) {
   const {thread} = route.params;
   const {user} = useContext(AuthContext);
   const currentUser = user.toJSON();
+  const refContainer = useRef(null);
   let ChatComponent = React.createRef();
 
   async function handleSend(messages) {
-    if (
-      ChatComponent !== null &&
-      ChatComponent !== undefined &&
-      ChatComponent.current !== undefined
-    ) {
-      ChatComponent.current.scrollToBottom();
-    }
     const text = messages[0].text;
     console.log(messages);
 
@@ -80,6 +74,7 @@ export default function RoomScreen({route}) {
           }
           return data;
         });
+        refContainer.current.scrollToBottom();
 
         setMessages(messages);
       });
@@ -150,7 +145,7 @@ export default function RoomScreen({route}) {
 
   return (
     <GiftedChat
-      ref={(ref) => (ChatComponent = ref)}
+      ref={refContainer}
       messages={messages}
       onSend={(newMessage) => handleSend(newMessage)}
       user={{_id: currentUser.uid}}
