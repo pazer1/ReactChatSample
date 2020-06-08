@@ -4,8 +4,10 @@ import {IconButton, Title} from 'react-native-paper';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import firestore from '@react-native-firebase/firestore';
+import useStatsBar from '../utils/useStatusBar';
 
 export default function AddRoomScreen({navigation}) {
+  useStatsBar('dark-content', 'white');
   const [roomName, setRoomName] = useState('');
 
   function handleButtonPress() {
@@ -14,8 +16,17 @@ export default function AddRoomScreen({navigation}) {
         .collection('THREADS')
         .add({
           name: roomName,
+          latestMessage: {
+            text: `You have joined the room ${roomName}`,
+            createdAt: new Date().getTime(),
+          },
         })
-        .then(() => {
+        .then((docRef) => {
+          docRef.collection('MESSAGES').add({
+            text: `You have joined the room ${roomName}.`,
+            createdAt: new Date().getTime(),
+            system: true,
+          });
           navigation.navigate('Home');
         });
     }
