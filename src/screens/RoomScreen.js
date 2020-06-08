@@ -15,8 +15,16 @@ export default function RoomScreen({route}) {
   const {thread} = route.params;
   const {user} = useContext(AuthContext);
   const currentUser = user.toJSON();
+  let ChatComponent = React.createRef();
 
   async function handleSend(messages) {
+    if (
+      ChatComponent !== null &&
+      ChatComponent !== undefined &&
+      ChatComponent.current !== undefined
+    ) {
+      ChatComponent.current.scrollToBottom();
+    }
     const text = messages[0].text;
     console.log(messages);
 
@@ -70,9 +78,9 @@ export default function RoomScreen({route}) {
               name: firebaseData.user.email,
             };
           }
-
           return data;
         });
+
         setMessages(messages);
       });
     return () => messagesListener();
@@ -85,6 +93,9 @@ export default function RoomScreen({route}) {
         wrapperStyle={{
           right: {
             backgroundColor: '#6646ee',
+          },
+          left: {
+            backgroundColor: '#DBDB36',
           },
         }}
         textStyle={{
@@ -117,7 +128,12 @@ export default function RoomScreen({route}) {
   function scrollToBottomComponent() {
     return (
       <View style={styles.bottomComponentContainer}>
-        <IconButton icon="chevron-double-down" size={36} color="#6646ee" />
+        <IconButton
+          icon="chevron-double-down"
+          size={36}
+          color="#6646ee"
+          ref={ChatComponent}
+        />
       </View>
     );
   }
@@ -134,6 +150,7 @@ export default function RoomScreen({route}) {
 
   return (
     <GiftedChat
+      ref={(ref) => (ChatComponent = ref)}
       messages={messages}
       onSend={(newMessage) => handleSend(newMessage)}
       user={{_id: currentUser.uid}}

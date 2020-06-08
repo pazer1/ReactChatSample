@@ -11,7 +11,6 @@ import useStatsBar from '../utils/useStatusBar';
 
 export default function HomeScreen({navigation}) {
   useStatsBar('light-content', '#6646ee');
-  const {user, logout} = useContext(AuthContext);
 
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
