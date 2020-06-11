@@ -1,15 +1,23 @@
-import React, {useState, useContext} from 'react';
-import {View, StyleSheet, PermissionsAndroid} from 'react-native';
+import React, {useState, useContext, useEffect} from 'react';
+import {
+  View,
+  StyleSheet,
+  PermissionsAndroid,
+  Text,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {Title, IconButton} from 'react-native-paper';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {AuthContext} from '../navigation/AuthProvider';
 import ImagePicker from 'react-native-image-picker';
+import userProfileImage from '../images/profile-icon-png.png';
 export default function SignupScreen({navigation}) {
   const {register} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [avartar, setAvatar] = useState('../images/profile-icon-png.png');
+  const [avartar, setAvatar] = useState('');
 
   const styles = StyleSheet.create({
     container: {
@@ -30,6 +38,10 @@ export default function SignupScreen({navigation}) {
     },
     navButton: {
       marginTop: 10,
+    },
+    userProfile: {
+      width: 150,
+      height: 150,
     },
   });
   const options = {
@@ -64,10 +76,8 @@ export default function SignupScreen({navigation}) {
           } else if (response.CustomButton) {
             console.log('User tapped custom button: ', response.customButton);
           } else {
-            const source = {uri: response.uri};
-            setAvatar({
-              avartar: source,
-            });
+            // const source = {uri: response.uri};
+            setAvatar(response.uri);
           }
         });
       } else {
@@ -80,12 +90,25 @@ export default function SignupScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Title style={styles.titleText}>Register to chat</Title>
-      <IconButton
-        icon={require(avartar)}
+      <Text>Show me What you got?</Text>
+      <Title style={styles.titleText} onPress={requestCameraPermission} />
+      {/* <IconButton
+        icon={(source = {uri: avartar})}
         size={50}
         onPress={requestCameraPermission}
-      />
+      /> */}
+      <TouchableOpacity onPress={requestCameraPermission}>
+        {avartar === '' ? (
+          <Image style={styles.userProfile} source={userProfileImage} />
+        ) : (
+          <Image
+            style={styles.userProfile}
+            source={{
+              uri: avartar,
+            }}
+          />
+        )}
+      </TouchableOpacity>
       <FormInput
         labelName="Email"
         value={email}
