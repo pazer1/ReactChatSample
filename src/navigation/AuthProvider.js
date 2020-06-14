@@ -1,7 +1,7 @@
 import React, {createContext, useState} from 'react';
 import {ImageEditor} from 'react-native';
-import auth, { firebase } from '@react-native-firebase/auth';
-
+import auth, {firebase} from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({children}) => {
@@ -21,35 +21,28 @@ export const AuthProvider = ({children}) => {
         },
         register: async (email, password, avartar) => {
           try {
-            await auth()
-              .createUserWithEmailAndPassword(email, password)
-              .then(() => {
-                var wantedMaxSize = 150;
-                var rawheight = avartar.height;
-                var rawwidth = avartar.width;
-                var ratio = rawwidth / rawheight;
-                var wantedwidth = wantedMaxSize;
-                var wantedheight = wantedMaxSize / ratio;
-                // check vertical or horizontal
-                if (rawheight > rawwidth) {
-                  wantedwidth = wantedMaxSize * ratio;
-                  wantedheight = wantedMaxSize;
-                }
-                let resizeUri = await new Promise((resolve, reject)=>{
-                ImageEditor.cropImage(avartar,{
-                  offset:{x:0,y:0},
-                  size:{width:avartar.width,height:avartar.height},
-                  displaySize:{width:wantedwidth,height:wantedHeight},
-                  resizeMode:'contain',
-                },
-                uri=>resolve(uri),
-                ()=>reject(),
-                )
-                })
-
-                var ref = firebase.database().ref("Uploads");
-                var storage 
+            var getFileBlob = function (url, cb) {
+              var xhr = new XMLHttpRequest();
+              xhr.open('GET', url);
+              xhr.responseType = 'blob';
+              xhr.addEventListener('load', function () {
+                cb(xhr.response);
               });
+              xhr.send();
+            };
+
+            uploadToStorage = (imageURL) => {
+              getFileBlob(imageURL, (blob) => {
+                storage()
+                  .ref()
+                  .child('images/user')
+                  .put(blob)
+                  .then(function (snapshot) {
+                    console.log('Uploaded a blob or file!');
+                  });
+              });
+            };
+            uploadToStorage(avartar);
           } catch (e) {
             console.log(e);
           }

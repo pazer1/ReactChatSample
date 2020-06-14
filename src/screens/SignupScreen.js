@@ -67,16 +67,19 @@ export default function SignupScreen({navigation}) {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
+        ImagePicker.showImagePicker(options, (response) => {
+          console.log('Response = ', response);
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.error) {
+            console.log('ImagePicker error ', response.error);
+          } else if (response.CustomButton) {
+            console.log('User tapped custom button: ', response.customButton);
+          } else {
+            // const source = {uri: response.uri};
+            setAvatar(response.uri);
+          }
         });
-
-        if (!result.cancelled) {
-          setAvatar(result.uri);
-        }
       } else {
         console.log('Camera permission denied');
       }
