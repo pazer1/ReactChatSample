@@ -21,28 +21,33 @@ export const AuthProvider = ({children}) => {
         },
         register: async (email, password, avartar) => {
           try {
-            var getFileBlob = function (url, cb) {
-              var xhr = new XMLHttpRequest();
-              xhr.open('GET', url);
-              xhr.responseType = 'blob';
-              xhr.addEventListener('load', function () {
-                cb(xhr.response);
-              });
-              xhr.send();
-            };
-
-            uploadToStorage = (imageURL) => {
-              getFileBlob(imageURL, (blob) => {
-                storage()
-                  .ref()
-                  .child('images/user')
-                  .put(blob)
-                  .then(function (snapshot) {
-                    console.log('Uploaded a blob or file!');
+            await auth()
+              .createUserWithEmailAndPassword(email, password)
+              .then(() => {
+                var getFileBlob = function (url, cb) {
+                  var xhr = new XMLHttpRequest();
+                  xhr.open('GET', url);
+                  xhr.responseType = 'blob';
+                  xhr.addEventListener('load', function () {
+                    cb(xhr.response);
                   });
+                  xhr.send();
+                };
+
+                const uploadToStorage = (imageURL) => {
+                  getFileBlob(imageURL, (blob) => {
+                    storage()
+                      .ref()
+                      .child('images/' + email)
+                      .put(blob)
+                      .then((snapShot) => {
+                        console.log('Uploaded a blob or file!');
+                        console.log(snapShot);
+                      });
+                  });
+                };
+                uploadToStorage(avartar);
               });
-            };
-            uploadToStorage(avartar);
           } catch (e) {
             console.log(e);
           }

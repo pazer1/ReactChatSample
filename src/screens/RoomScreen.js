@@ -21,7 +21,7 @@ export default function RoomScreen({route}) {
   async function handleSend(messages) {
     const text = messages[0].text;
     console.log(messages);
-
+    console.log(user);
     firestore()
       .collection('THREADS')
       .doc(thread._id)
