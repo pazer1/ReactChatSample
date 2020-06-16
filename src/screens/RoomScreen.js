@@ -55,6 +55,9 @@ export default function RoomScreen({route}) {
   }
 
   useEffect(() => {
+    console.log(user);
+    console.log(profileImage);
+
     const messagesListener = firestore()
       .collection('THREADS')
       .doc(thread._id)
