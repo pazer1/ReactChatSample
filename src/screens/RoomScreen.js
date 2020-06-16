@@ -5,6 +5,9 @@ import {
   Send,
   SystemMessage,
 } from 'react-native-gifted-chat';
+import auth, {firebase} from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
+
 import {ActivityIndicator, View, StyleSheet} from 'react-native';
 import {IconButton} from 'react-native-paper';
 import {AuthContext} from '../navigation/AuthProvider';
@@ -14,14 +17,15 @@ export default function RoomScreen({route}) {
   const [messages, setMessages] = useState([]);
   const {thread} = route.params;
   const {user} = useContext(AuthContext);
+  const {profileImage} = useContext(AuthContext);
   const currentUser = user.toJSON();
   const refContainer = useRef(null);
   let ChatComponent = React.createRef();
 
   async function handleSend(messages) {
     const text = messages[0].text;
-    console.log(messages);
-    console.log(user);
+    console.log(profileImage);
+
     firestore()
       .collection('THREADS')
       .doc(thread._id)
@@ -32,6 +36,7 @@ export default function RoomScreen({route}) {
         user: {
           _id: currentUser.uid,
           email: currentUser.email,
+          avatar: profileImage,
         },
       });
 
@@ -58,7 +63,6 @@ export default function RoomScreen({route}) {
       .onSnapshot((querySnapshot) => {
         const messages = querySnapshot.docs.map((doc) => {
           const firebaseData = doc.data();
-
           const data = {
             _id: doc.id,
             text: '',
@@ -70,12 +74,12 @@ export default function RoomScreen({route}) {
             data.user = {
               ...firebaseData.user,
               name: firebaseData.user.email,
+              avatar: firebaseData.user.avatar,
             };
           }
           return data;
         });
         refContainer.current.scrollToBottom();
-
         setMessages(messages);
       });
     return () => messagesListener();

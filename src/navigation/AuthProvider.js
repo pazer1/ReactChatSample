@@ -6,15 +6,44 @@ export const AuthContext = createContext({});
 
 export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
+  const [profileImage, setProfileImage] = useState('');
 
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
+        profileImage,
+        setProfileImage,
         login: async (email, password) => {
           try {
-            await auth().signInWithEmailAndPassword(email, password);
+            await auth()
+              .signInWithEmailAndPassword(email, password)
+              .then(() => {
+                storage()
+                  .ref()
+                  .child('images/' + email)
+                  .getDownloadURL()
+                  .then(function (url) {
+                    // `url` is the download URL for 'images/stars.jpg'
+
+                    // This can be downloaded directly:
+                    var xhr = new XMLHttpRequest();
+                    xhr.responseType = 'blob';
+                    xhr.onload = function (event) {
+                      var blob = xhr.response;
+                    };
+                    xhr.open('GET', url);
+                    xhr.send();
+                    // Or inserted into an <img> element:
+                    console.log(url);
+                    setProfileImage(url);
+                  })
+                  .catch(function (error) {
+                    // Handle any errors
+                    console.log(error);
+                  });
+              });
           } catch (e) {
             console.log(e);
           }
@@ -40,9 +69,30 @@ export const AuthProvider = ({children}) => {
                       .ref()
                       .child('images/' + email)
                       .put(blob)
-                      .then((snapShot) => {
-                        console.log('Uploaded a blob or file!');
-                        console.log(snapShot);
+                      .then(() => {
+                        storage()
+                          .ref()
+                          .child('images/' + email)
+                          .getDownloadURL()
+                          .then(function (url) {
+                            // `url` is the download URL for 'images/stars.jpg'
+
+                            // This can be downloaded directly:
+                            var xhr = new XMLHttpRequest();
+                            xhr.responseType = 'blob';
+                            xhr.onload = function (event) {
+                              var blob = xhr.response;
+                            };
+                            xhr.open('GET', url);
+                            xhr.send();
+                            // Or inserted into an <img> element:
+                            console.log(url);
+                            setProfileImage(url);
+                          })
+                          .catch(function (error) {
+                            // Handle any errors
+                            console.log(error);
+                          });
                       });
                   });
                 };
