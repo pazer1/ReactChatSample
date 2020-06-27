@@ -8,12 +8,16 @@ import firestore from '@react-native-firebase/firestore';
 import Loading from '../components/Loading';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import useStatsBar from '../utils/useStatusBar';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import Dashboard from './BroadcastScreen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function HomeScreen({navigation}) {
   useStatsBar('light-content', '#6646ee');
 
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
+  const Tab = createMaterialBottomTabNavigator();
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -44,8 +48,8 @@ export default function HomeScreen({navigation}) {
     return <Loading />;
   }
 
-  return (
-    <View style={styles.container}>
+  const MainScreen = () => {
+    return (
       <FlatList
         data={threads}
         keyExtractor={(item) => item._id}
@@ -65,6 +69,37 @@ export default function HomeScreen({navigation}) {
           </TouchableOpacity>
         )}
       />
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <Tab.Navigator
+        initialRouteName="MainScreen"
+        activeColor="#f0edf6"
+        inactiveColor="#3e2465"
+        barStyle={{backgroundColor: '#694fad'}}>
+        <Tab.Screen
+          name="MainScreen"
+          component={MainScreen}
+          options={{
+            tabBarLabel: 'Home',
+            tabBarIcon: ({color}) => (
+              <MaterialCommunityIcons name="home" color={color} size={26} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="BroadcastScreen"
+          component={Dashboard}
+          options={{
+            tabBarLabel: 'Updates',
+            tabBarIcon: ({color}) => (
+              <MaterialCommunityIcons name="bell" color={color} size={26} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
     </View>
   );
 }

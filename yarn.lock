@@ -1013,6 +1013,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@nomi9995/react-native-image-compressor@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@nomi9995/react-native-image-compressor/-/react-native-image-compressor-0.0.1.tgz#496f9ef89ff14c740071fba90fbbcd0b1d51400c"
+  integrity sha512-xQ2Cd02U4xtpNjmF5Od27S6h3NHBPP4pi/0looGD5dh4tezXg39iX/MJS53RDXeO0HwQ6zZoyGRqx6bJRJGXWg==
+
 "@react-native-community/cli-debugger-ui@^4.9.0":
   version "4.9.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.9.0.tgz#4177764ba69243c97aa26829d59d9501acb2bd71"
@@ -1199,6 +1204,11 @@
     query-string "^6.12.1"
     react-is "^16.13.0"
     use-subscription "^1.4.0"
+
+"@react-navigation/material-bottom-tabs@^5.2.12":
+  version "5.2.12"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-bottom-tabs/-/material-bottom-tabs-5.2.12.tgz#4f2e9fed009d59180a47d2af78c07fc43dae120f"
+  integrity sha512-rhoo8Iey0u0lvPCiXbap4Pb+iAqqW30+l8f6/KwrI/31gUJSn4uXyf+tFc73xny7cWJp0UbGbf+LlVsGOKpX4w==
 
 "@react-navigation/native@5.5.0":
   version "5.5.0"

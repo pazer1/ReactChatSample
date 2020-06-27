@@ -15,7 +15,6 @@ export default function Routes() {
 
   function onAuthStateChanged(user) {
     setUser(user);
-    {user.email !== undefined | user.email !== null? getImageUrl(user.email)}
     if (initializing) {
       setInitializing(false);
     }

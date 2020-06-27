@@ -46,6 +46,9 @@ export default function SignupScreen({navigation}) {
   });
   const options = {
     title: 'Select Avatar',
+    maxWidth: 500,
+    maxHeight: 500,
+    quality: 0.5,
     storageOptions: {
       skipBackup: true,
       path: 'images',
